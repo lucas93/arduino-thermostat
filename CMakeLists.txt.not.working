@@ -1,0 +1,46 @@
+cmake_minimum_required(VERSION 2.8.2)
+
+project(DP_Example)
+
+include(CTest)
+add_compile_options(-std=c++17)
+
+if (CMAKE_VERSION VERSION_LESS 3.2)
+    set(UPDATE_DISCONNECTED_IF_AVAILABLE "")
+else()
+    set(UPDATE_DISCONNECTED_IF_AVAILABLE "UPDATE_DISCONNECTED 1")
+endif()
+
+include(DownloadProject.cmake)
+download_project(PROJ                googletest
+                 GIT_REPOSITORY      https://github.com/google/googletest.git
+                 GIT_TAG             master
+                 ${UPDATE_DISCONNECTED_IF_AVAILABLE}
+)
+
+# Prevent GoogleTest from overriding our compiler/linker options
+# when building with Visual Studio
+set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
+
+add_subdirectory(${googletest_SOURCE_DIR} ${googletest_BINARY_DIR})
+
+
+set(UNIT_TESTS_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/ut")
+set(COMMON_APPLICATION_FILES_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/application/")
+
+
+file(GLOB_RECURSE UNIT_TEST_SOURCES ${UNIT_TESTS_DIRECTORY} "Test*.cpp")
+file(GLOB_RECURSE COMMON_HEADER_FILES ${COMMON_APPLICATION_FILES_DIRECTORY} "*.h")
+file(GLOB_RECURSE COMMON_SOURCE_FILES ${COMMON_APPLICATION_FILES_DIRECTORY} "*.cpp")
+
+
+set(COMMON_EXECUTABLE_FILES ${COMMON_SOURCE_FILES} ${COMMON_HEADER_FILES})
+
+add_executable(unit_tests ${UNIT_TEST_SOURCES} ${COMMON_EXECUTABLE_FILES})
+add_executable(main main.cpp ${COMMON_EXECUTABLE_FILES})
+
+target_include_directories(unit_tests PUBLIC "${COMMON_APPLICATION_FILES_DIRECTORY}/BaseClass/")
+target_include_directories(main PUBLIC "${COMMON_APPLICATION_FILES_DIRECTORY}/BaseClass/")
+
+target_link_libraries(unit_tests gtest gmock_main)
+add_test(NAME unit_tests COMMAND unit_tests)

@@ -1,7 +1,6 @@
 #pragma once
 
-class ISetpoint
+struct ISetpoint
 {
-public:
-  ISetpoint() {}
+  virtual float getSetpoint() = 0;
 };

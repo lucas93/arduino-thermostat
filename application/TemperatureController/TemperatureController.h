@@ -1,5 +1,10 @@
 #pragma once
 
+#include <ISensor.h>
+#include <IEnabler.h>
+#include <IOutput.h>
+#include <IRegulator.h>
+#include <ISetpoint.h>
 #include <IController.h>
 
 class TemperatureController : public IController
@@ -11,16 +16,21 @@ public:
                         IRegulator& regulator,
                         ISetpoint& setpoint,
                         IEnabler& enabler)
-    : IController(output,
-                  sensor,
-                  regulator,
-                  setpoint,
-                  enabler) {}
+    : output(output),
+      sensor(sensor),
+      regulator(regulator),
+      setpoint(setpoint),
+      enabler(enabler)
+  {}
+  virtual ~TemperatureController(){}
 
   virtual void setup() override;
-  virtual void loop() override;
+  virtual void controlLoop() override;
 
 private:
+  IOutput& output;
+  ISensor& sensor;
+  IRegulator& regulator;
+  ISetpoint& setpoint;
+  IEnabler& enabler;
 };
-
-

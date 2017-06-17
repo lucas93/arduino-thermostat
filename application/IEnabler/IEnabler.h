@@ -1,7 +1,6 @@
 #pragma once
 
-class IEnabler
+struct IEnabler
 {
-public:
-  IEnabler() {}
+  virtual bool isEnabled() = 0;
 };

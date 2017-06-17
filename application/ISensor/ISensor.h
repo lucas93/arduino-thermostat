@@ -1,7 +1,8 @@
 #pragma once
 
-class ISensor
+#include <ISetupable.h>
+
+struct ISensor
 {
-public:
-  ISensor() {}
+  virtual float measurement() = 0;
 };

@@ -1,7 +1,7 @@
 #pragma once
+#include <IOutput.h>
 
-class IRegulator
+struct IRegulator
 {
-public:
-  IRegulator() {}
+  virtual void controllOutput(IOutput& output) = 0;
 };

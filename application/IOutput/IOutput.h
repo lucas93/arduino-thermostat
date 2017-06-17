@@ -1,7 +1,7 @@
 #pragma once
 
-class IOutput
+struct IOutput
 {
-public:
-  IOutput() {}
+  virtual void setOn() = 0;
+  virtual void setOff() = 0;
 };

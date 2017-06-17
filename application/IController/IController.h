@@ -22,7 +22,7 @@ public:
       setpoint(setpoint),
       enabler(enabler)
   {}
-  virtual ~IController();
+  virtual ~IController() {}
 
   virtual void loop() = 0;
 

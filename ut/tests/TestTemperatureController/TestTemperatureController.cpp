@@ -16,16 +16,17 @@ struct TestTemperatureController : public Test
   MockIRegulator regulator;
   MockISensor sensor;
   MockISetpoint setpoint;
-  TemperatureController sut{output,
-                            sensor,
-                            regulator,
-                            setpoint,
-                            enabler
+  TemperatureController sut{&output,
+                            &sensor,
+                            &regulator,
+                            &setpoint,
+                            &enabler
                            };
 };
 
 TEST_F(TestTemperatureController, configTest)
 {
+  sut.inject_IRegulator(&regulator);
   sut.controlLoop();
 }
 

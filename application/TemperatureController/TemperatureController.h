@@ -11,11 +11,11 @@
 class TemperatureController : public IController
 {
 public:
-  TemperatureController(IOutput& output,
-                        ISensor& sensor,
-                        IRegulator& regulator,
-                        ISetpoint& setpoint,
-                        IEnabler& enabler)
+  TemperatureController(IOutput* output,
+                        ISensor* sensor,
+                        IRegulator* regulator,
+                        ISetpoint* setpoint,
+                        IEnabler* enabler)
     : output(output),
       sensor(sensor),
       regulator(regulator),
@@ -28,9 +28,9 @@ public:
   virtual void controlLoop() override;
 
 private:
-  IOutput& output;
-  ISensor& sensor;
-  IRegulator& regulator;
-  ISetpoint& setpoint;
-  IEnabler& enabler;
+  INJECTABLE_INTERFACE(IOutput, output);
+  INJECTABLE_INTERFACE(ISensor, sensor);
+  INJECTABLE_INTERFACE(IRegulator, regulator);
+  INJECTABLE_INTERFACE(ISetpoint, setpoint);
+  INJECTABLE_INTERFACE(IEnabler, enabler);
 };

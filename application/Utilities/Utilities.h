@@ -1,10 +1,10 @@
 #pragma once
 
 #define INJECTABLE_INTERFACE(TYPE, NAME) \
-  public: \
-  TYPE * NAME;\
   private: \
-  void inject_##TYPE(TYPE arg) \
+  TYPE * NAME;\
+  public: \
+  void inject_##TYPE(TYPE * arg) \
   {\
     NAME = arg;\
   }

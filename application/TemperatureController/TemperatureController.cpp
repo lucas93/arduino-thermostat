@@ -7,5 +7,5 @@ void TemperatureController::setup()
 
 void TemperatureController::controlLoop()
 {
-  regulator.controllOutput(output);
+  regulator->controllOutput(*output);
 }

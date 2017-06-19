@@ -2,6 +2,6 @@
 
 class MockIRegulator : public IRegulator {
  public:
-  MOCK_METHOD1(controllOutput,
-      void(IOutput& output));
+  MOCK_METHOD3(controllOutput,
+      void(IOutput&, const ISetpoint&, const ISensor& ));
 };

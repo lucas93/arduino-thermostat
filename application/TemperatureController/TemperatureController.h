@@ -8,6 +8,9 @@
 #include <IController.h>
 #include <Utilities.h>
 
+namespace heater
+{
+
 class TemperatureController : public IController
 {
 public:
@@ -34,3 +37,5 @@ private:
   INJECTABLE_INTERFACE(ISetpoint, setpoint);
   INJECTABLE_INTERFACE(IEnabler, enabler);
 };
+
+} // namespace heater

@@ -1,8 +1,10 @@
 #pragma once
 
 #include <ISetupable.h>
+#include <Utilities.h>
 
 struct ISensor
 {
-  virtual float measurement() = 0;
+  using Unit = f32;
+  virtual Unit measurement() = 0;
 };

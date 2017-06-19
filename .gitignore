@@ -1,2 +1,3 @@
 *.user 
 arduino-cmake/*.user
+build*

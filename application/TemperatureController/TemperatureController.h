@@ -6,6 +6,7 @@
 #include <IRegulator.h>
 #include <ISetpoint.h>
 #include <IController.h>
+#include <Utilities.h>
 
 class TemperatureController : public IController
 {

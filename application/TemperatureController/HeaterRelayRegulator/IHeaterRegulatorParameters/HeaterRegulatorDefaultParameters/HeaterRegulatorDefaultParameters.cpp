@@ -9,6 +9,7 @@ public:
   HeaterRegulatorDefaultParameters(Unit deadZone) :
     deadzoneRange(deadZone) {}
 
+  ~HeaterRegulatorDefaultParameters() = default;
 
   virtual Unit deadzone() const override
   {

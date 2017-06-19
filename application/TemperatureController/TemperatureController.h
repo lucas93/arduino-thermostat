@@ -10,7 +10,6 @@
 class TemperatureController : public IController
 {
 public:
-  template< typename... Args>
   TemperatureController(IOutput& output,
                         ISensor& sensor,
                         IRegulator& regulator,

@@ -50,8 +50,9 @@ GetListOfAllFilesInSubDirectories(  APPLICATION_HEADERS ${APPLICATION_SOURCES_DI
 add_executable(unit_tests
     ${UNIT_TESTS_SOURCES}
     ${APPLICATION_SOURCES}
+    ${APPLICATION_HEADERS}
     ${MOCKS_SOURCES}
-    ${MOCKS_HEADERS})   # QtCreator has problems with displaying header files in project tree if they are not a part of executable
+    ${MOCKS_HEADERS})   # QtCreator has problems with displaying header files in project tree if they are not a part of executable #FIXME
 
 include_directories(
     ${APPLICATION_SOURCES_SUBDIRECTORIES}

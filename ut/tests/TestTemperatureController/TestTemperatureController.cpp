@@ -1,22 +1,18 @@
-#include "gtest/gtest.h"
-#include "gmock/gmock.h"
+#include <gtest/gtest.h>
+#include <gmock/gmock.h>
 #include <TemperatureController.h>
 #include <MockIEnabler.h>
 #include <MockIOutput.h>
 #include <MockIRegulator.h>
 #include <MockISensor.h>
 #include <MockISetpoint.h>
-#include <memory>
+#include <Utilities.h>
 
 using namespace testing;
 using namespace heater;
 using namespace std;
 
-template <typename T>
-auto injectMock(T* ptr)
-{
-  return unique_ptr<T>(ptr);
-}
+
 
 
 struct TestTemperatureController : public Test
@@ -33,8 +29,6 @@ struct TestTemperatureController : public Test
                             injectMock(setpoint),
                             injectMock(enabler)};
 };
-
-
 
 
 TEST_F(TestTemperatureController,

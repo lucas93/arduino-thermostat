@@ -5,11 +5,16 @@
 
 #ifdef ARDUINO
 
-  #include "PrimitivesSizeDeployment.h"
+#include "PrimitivesSizeDeployment.h"
 
-#else
+#else // Unit Test
 
-  #include "PrimitivesSizeTesting.h"
+#include "PrimitivesSizeTesting.h"
+template <typename T>
+auto injectMock(T* ptr)
+{
+  return std::unique_ptr<T>(ptr);
+}
 
 #endif
 

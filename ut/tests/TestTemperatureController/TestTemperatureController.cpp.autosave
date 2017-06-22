@@ -35,8 +35,6 @@ struct TestTemperatureController : public Test
 };
 
 
-
-
 TEST_F(TestTemperatureController,
        WhenEnabled_ShouldAct)
 {

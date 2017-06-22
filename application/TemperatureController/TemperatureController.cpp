@@ -1,6 +1,8 @@
 #include <TemperatureController.h>
+#include <iostream>
 
 using namespace heater;
+using namespace std;
 
 void TemperatureController::setup()
 {

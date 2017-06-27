@@ -14,16 +14,16 @@ namespace heater
 class TemperatureController : public IController
 {
 public:
-  TemperatureController(unique_ptr<IOutput> output,
-                        unique_ptr<ISensor> sensor,
-                        unique_ptr<IRegulator> regulator,
-                        unique_ptr<ISetpoint> setpoint,
-                        unique_ptr<IEnabler> enabler) :
-    output(move(output)),
-    sensor(move(sensor)),
-    regulator(move(regulator)),
-    setpoint(move(setpoint)),
-    enabler(move(enabler))
+  TemperatureController(owner<IOutput> output,
+                        owner<ISensor> sensor,
+                        owner<IRegulator> regulator,
+                        owner<ISetpoint> setpoint,
+                        owner<IEnabler> enabler) :
+    output(output),
+    sensor(sensor),
+    regulator(regulator),
+    setpoint(setpoint),
+    enabler(enabler)
   { }
 
   virtual ~TemperatureController(){}

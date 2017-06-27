@@ -1,12 +1,15 @@
 #pragma once
+#include <DummySmartPointers.h>
 
+using util::owner;
+using util::scoped_owner;
+using util::pointer;
 
 
 #ifdef ARDUINO
 
 
 #include "PrimitivesSizeDeployment.h"
-#include <Unique_ptr.h>
 
 
 #else // Unit Test
@@ -14,11 +17,10 @@
 
 #include "PrimitivesSizeTesting.h"
 
-using std::unique_ptr;
 template <typename T>
 auto injectMock(T* ptr)
 {
-  return std::unique_ptr<T>(ptr);
+  return util::owner<T>(ptr);
 }
 
 
@@ -28,9 +30,9 @@ auto injectMock(T* ptr)
 
 #define INJECTABLE_INTERFACE(TYPE, NAME) \
   private: \
-  unique_ptr<TYPE>  NAME;\
+  util::owner<TYPE>  NAME;\
   public: \
-  void inject_##TYPE(std::unique_ptr<TYPE> arg) \
+  void inject_##TYPE(util::owner<TYPE> arg) \
   {\
-    NAME = move(arg);\
+    NAME = arg;\
   }

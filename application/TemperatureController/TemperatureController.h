@@ -14,11 +14,11 @@ namespace heater
 class TemperatureController : public IController
 {
 public:
-  TemperatureController(std::unique_ptr<IOutput> output,
-                        std::unique_ptr<ISensor> sensor,
-                        std::unique_ptr<IRegulator> regulator,
-                        std::unique_ptr<ISetpoint> setpoint,
-                        std::unique_ptr<IEnabler> enabler) :
+  TemperatureController(unique_ptr<IOutput> output,
+                        unique_ptr<ISensor> sensor,
+                        unique_ptr<IRegulator> regulator,
+                        unique_ptr<ISetpoint> setpoint,
+                        unique_ptr<IEnabler> enabler) :
     output(move(output)),
     sensor(move(sensor)),
     regulator(move(regulator)),

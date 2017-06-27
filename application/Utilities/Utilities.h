@@ -1,20 +1,26 @@
 #pragma once
 
-#include <memory>
 
 
 #ifdef ARDUINO
 
+
 #include "PrimitivesSizeDeployment.h"
+#include <Unique_ptr.h>
+
 
 #else // Unit Test
 
+
 #include "PrimitivesSizeTesting.h"
+
+using std::unique_ptr;
 template <typename T>
 auto injectMock(T* ptr)
 {
   return std::unique_ptr<T>(ptr);
 }
+
 
 #endif
 
@@ -22,9 +28,9 @@ auto injectMock(T* ptr)
 
 #define INJECTABLE_INTERFACE(TYPE, NAME) \
   private: \
-  std::unique_ptr<TYPE>  NAME;\
+  unique_ptr<TYPE>  NAME;\
   public: \
   void inject_##TYPE(std::unique_ptr<TYPE> arg) \
   {\
-    NAME = std::move(arg);\
+    NAME = move(arg);\
   }

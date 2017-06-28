@@ -1,10 +1,11 @@
 #pragma once
 #include <DummySmartPointers.h>
+#include <function.h>
 
 using util::owner;
 using util::scoped_owner;
 using util::pointer;
-
+using util::function;
 
 #ifdef ARDUINO
 
@@ -18,7 +19,7 @@ using util::pointer;
 #include "PrimitivesSizeTesting.h"
 
 template <typename T>
-auto injectMock(T* ptr)
+constexpr auto injectMock(T* ptr)
 {
   return util::owner<T>(ptr);
 }
@@ -28,11 +29,23 @@ auto injectMock(T* ptr)
 
 
 
+//#define INJECTABLE_INTERFACE(TYPE, NAME) \
+//  private: \
+//  util::owner<TYPE>  NAME;\
+//  public: \
+//  void inject_##TYPE(util::owner<TYPE> arg) \
+//  {\
+//    NAME = (arg);\
+//  }
+
+
 #define INJECTABLE_INTERFACE(TYPE, NAME) \
   private: \
-  util::owner<TYPE>  NAME;\
+  util::scoped_owner<TYPE>  NAME;\
   public: \
   void inject_##TYPE(util::owner<TYPE> arg) \
   {\
-    NAME = arg;\
+    NAME.reassign(arg);\
   }
+
+

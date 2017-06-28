@@ -28,6 +28,7 @@ struct TestTemperatureController : public Test
                             injectMock(regulator),
                             injectMock(setpoint),
                             injectMock(enabler)};
+
 };
 
 

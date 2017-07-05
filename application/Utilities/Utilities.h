@@ -17,11 +17,25 @@ using util::function;
 
 
 #include "PrimitivesSizeTesting.h"
+#include <functional>
+
+using std::bind;
+
 
 template <typename T>
 constexpr auto injectMock(T* ptr)
 {
   return util::owner<T>(ptr);
+}
+
+
+template <typename T, typename R, typename... Args>
+constexpr auto injectFunctor(T& mock, R (T::*mockedFunction)(Args...))
+{
+  return [&](Args... args)
+  {
+    return (mock.*mockedFunction)(args...);
+  };
 }
 
 
@@ -46,6 +60,15 @@ constexpr auto injectMock(T* ptr)
   void inject_##TYPE(util::owner<TYPE> arg) \
   {\
     NAME.reassign(arg);\
+  }
+
+#define INJECTABLE_FUNCTOR(FUNCTOR_TYPE, NAME) \
+  private: \
+  FUNCTOR_TYPE  NAME;\
+  public: \
+  void inject_##NAME(FUNCTOR_TYPE&& arg) \
+  {\
+    NAME = util::move(arg);\
   }
 
 

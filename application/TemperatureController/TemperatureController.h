@@ -18,12 +18,12 @@ public:
                         owner<ISensor> sensor,
                         owner<IRegulator> regulator,
                         owner<ISetpoint> setpoint,
-                        owner<IEnabler> enabler) :
+                        IEnabler isEnabled) :
     output(output),
     sensor(sensor),
     regulator(regulator),
     setpoint(setpoint),
-    enabler(enabler)
+    isEnabled(util::move(isEnabled))
   { }
 
   virtual ~TemperatureController(){}
@@ -36,7 +36,7 @@ private:
   INJECTABLE_INTERFACE(ISensor, sensor);
   INJECTABLE_INTERFACE(IRegulator, regulator);
   INJECTABLE_INTERFACE(ISetpoint, setpoint);
-  INJECTABLE_INTERFACE(IEnabler, enabler);
+  INJECTABLE_FUNCTOR(IEnabler, isEnabled);
 };
 
 } // namespace heater

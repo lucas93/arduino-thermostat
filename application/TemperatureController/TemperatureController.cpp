@@ -1,7 +1,6 @@
 #include <TemperatureController.h>
 
 using namespace heater;
-using namespace std;
 
 void TemperatureController::setup()
 {
@@ -10,7 +9,7 @@ void TemperatureController::setup()
 
 void TemperatureController::controlLoop()
 {
-  if(enabler->isEnabled())
+  if(isEnabled())
   {
     regulator->controllOutput(*output,
                               *setpoint,

@@ -1,10 +1,10 @@
 #pragma once
 
-#include <ISensor.h>
-#include <IEnabler.h>
+#include <Sensor.h>
+#include <Enabler.h>
 #include <IOutput.h>
 #include <IRegulator.h>
-#include <ISetpoint.h>
+#include <Setpoint.h>
 #include <IController.h>
 #include <Utilities.h>
 
@@ -15,14 +15,14 @@ class TemperatureController : public IController
 {
 public:
   TemperatureController(owner<IOutput> output,
-                        owner<ISensor> sensor,
+                        Sensor getMeasurement,
                         owner<IRegulator> regulator,
-                        owner<ISetpoint> setpoint,
-                        IEnabler isEnabled) :
+                        Setpoint getSetpoint,
+                        Enabler isEnabled) :
     output(output),
-    sensor(sensor),
+    getMeasurement(util::move(getMeasurement)),
     regulator(regulator),
-    setpoint(setpoint),
+    getSetpoint(util::move(getSetpoint)),
     isEnabled(util::move(isEnabled))
   { }
 
@@ -33,10 +33,10 @@ public:
 
 private:
   INJECTABLE_INTERFACE(IOutput, output);
-  INJECTABLE_INTERFACE(ISensor, sensor);
+  INJECTABLE_FUNCTOR(Sensor, getMeasurement);
   INJECTABLE_INTERFACE(IRegulator, regulator);
-  INJECTABLE_INTERFACE(ISetpoint, setpoint);
-  INJECTABLE_FUNCTOR(IEnabler, isEnabled);
+  INJECTABLE_FUNCTOR(Setpoint, getSetpoint);
+  INJECTABLE_FUNCTOR(Enabler, isEnabled);
 };
 
 } // namespace heater

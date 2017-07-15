@@ -1,7 +1,7 @@
-#include <ISetpoint.h>
+#include <Setpoint.h>
 
-class MockISetpoint : public ISetpoint {
+class MockISetpoint{
  public:
   MOCK_METHOD0(getSetpoint,
-      float());
+      Unit());
 };

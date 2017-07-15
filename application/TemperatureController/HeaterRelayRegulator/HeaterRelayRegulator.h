@@ -15,8 +15,8 @@ public:
   {}
 
   virtual void controllOutput(IOutput &output,
-                              const ISetpoint &setpoint,
-                              const ISensor &sensor) override;
+                              Setpoint& getSetpoint,
+                              Sensor& getMeasurement) override;
 private:
   INJECTABLE_INTERFACE(IHeaterRegulatorParameters, parameters);
 

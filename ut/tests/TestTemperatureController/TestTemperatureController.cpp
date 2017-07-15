@@ -20,31 +20,29 @@ struct TestTemperatureController : public Test
   MockIEnabler enabler {};
   MockIOutput* output = new MockIOutput();
   MockIRegulator* regulator = new MockIRegulator();
-  MockISensor* sensor = new MockISensor();
-  MockISetpoint* setpoint = new MockISetpoint();
+  MockISensor sensor {};
+  MockISetpoint setpoint {};
 
   TemperatureController sut{injectMock(output),
-                            injectMock(sensor),
+                            bind(&MockISensor::measurement ,&sensor),
                             injectMock(regulator),
-                            injectMock(setpoint),
-//                            injectFunctor(enabler, &MockIEnabler::isEnabled)
+                            bind(&MockISetpoint::getSetpoint, &setpoint),
                             bind(&MockIEnabler::isEnabled, &enabler)
                            };
-//                            IEnabler{ [&](){ return enabler.isEnabled(); } }};
 
 };
 
 
-//TEST_F(TestTemperatureController,
-//       WhenEnabled_ShouldAct)
-//{
-//  EXPECT_CALL(*enabler, isEnabled())
-//      .WillOnce(Return(true));
-//  EXPECT_CALL(*regulator, controllOutput(_,_,_))
-//      .Times(AtLeast(1));
+TEST_F(TestTemperatureController,
+       WhenEnabled_ShouldAct)
+{
+  EXPECT_CALL(enabler, isEnabled())
+      .WillOnce(Return(true));
+  EXPECT_CALL(*regulator, controllOutput(_,_,_))
+      .Times(AtLeast(1));
 
-//  sut.controlLoop();
-//}
+  sut.controlLoop();
+}
 
 TEST_F(TestTemperatureController,
        WhenNotEnabled_ShouldNotAct)

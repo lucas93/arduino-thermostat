@@ -12,7 +12,7 @@ void TemperatureController::controlLoop()
   if(isEnabled())
   {
     regulator->controllOutput(*output,
-                              *setpoint,
-                              *sensor);
+                              getSetpoint,
+                              getMeasurement);
   }
 }

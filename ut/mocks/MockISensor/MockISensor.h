@@ -1,6 +1,6 @@
-#include <ISensor.h>
+#include <Sensor.h>
 
-class MockISensor : public ISensor {
+class MockISensor{
  public:
   MOCK_METHOD0(measurement,
       float());

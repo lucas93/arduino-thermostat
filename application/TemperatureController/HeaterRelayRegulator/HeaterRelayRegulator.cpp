@@ -4,10 +4,11 @@
 using namespace heater;
 
 void HeaterRelayRegulator::controllOutput(IOutput &output,
-                                          const ISetpoint &setpoint,
-                                          const ISensor &sensor)
+                                          Setpoint& getSetpoint,
+                                          Sensor& getMeasurement)
 {
-  int* ptr = new int{5};
-  int* ptr2 = util::move(ptr);
-  delete ptr2;
+  const auto setpoint = getSetpoint();
+  const auto sensorVal = getMeasurement();
+
+
 }

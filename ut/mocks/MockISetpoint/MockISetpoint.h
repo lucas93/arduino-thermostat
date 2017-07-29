@@ -3,5 +3,5 @@
 class MockISetpoint{
  public:
   MOCK_METHOD0(getSetpoint,
-      Unit());
+      Temp());
 };

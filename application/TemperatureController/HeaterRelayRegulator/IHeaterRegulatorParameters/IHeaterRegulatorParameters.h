@@ -8,7 +8,8 @@ namespace heater
 
 struct IHeaterRegulatorParameters
 {
-  virtual Unit deadzone() const = 0;
+  virtual Temp deadzone() const = 0;
+  virtual ~IHeaterRegulatorParameters() = default;
 };
 
 } // namepsace heater

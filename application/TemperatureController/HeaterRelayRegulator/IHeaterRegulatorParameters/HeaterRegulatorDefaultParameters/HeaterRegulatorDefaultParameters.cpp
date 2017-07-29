@@ -6,18 +6,18 @@ class HeaterRegulatorDefaultParameters : public IHeaterRegulatorParameters
 {
 
 public:
-  HeaterRegulatorDefaultParameters(Unit deadZone) :
+  HeaterRegulatorDefaultParameters(Temp deadZone) :
     deadzoneRange(deadZone) {}
 
   ~HeaterRegulatorDefaultParameters() = default;
 
-  virtual Unit deadzone() const override
+  virtual Temp deadzone() const override
   {
     return deadzoneRange;
   }
 
 private:
-  Unit deadzoneRange = 0;
+  Temp deadzoneRange = 0;
 };
 
 IHeaterRegulatorParameters* getHeaterRegulatorDefaultParameters()

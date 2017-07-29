@@ -3,5 +3,5 @@
 class MockISensor{
  public:
   MOCK_METHOD0(measurement,
-      float());
+      Temp());
 };

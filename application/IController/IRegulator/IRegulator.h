@@ -8,4 +8,5 @@ struct IRegulator
   virtual void controllOutput(IOutput& output,
                               Setpoint& getSetpoint,
                               Sensor& getMeasurement) = 0;
+  virtual ~IRegulator() = default;
 };

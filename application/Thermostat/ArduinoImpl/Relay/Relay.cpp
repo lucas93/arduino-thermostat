@@ -1,4 +1,5 @@
 #include <Relay.h>
+#include <DummySmartPointers.h>
 
 namespace heater
 {
@@ -19,9 +20,9 @@ private:
 
 };
 
-owner<IOutput> getRelayInstance()
+unique_ptr<IOutput> getDefaultRelayInstance()
 {
-  return new Relay{} ;
+  return unique_ptr<IOutput>(new Relay{});
 }
 
 } //namespace heater

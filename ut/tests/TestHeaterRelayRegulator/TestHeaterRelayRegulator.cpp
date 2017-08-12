@@ -55,6 +55,11 @@ TEST_F(TestHeaterRegulator,
   sut.controllOutput(outputMock, getSetpoint, getMeasurement);
 }
 
+struct A {};
+struct B : public A {};
+struct C {};
+
+
 TEST_F(TestHeaterRegulator,
        WhenMeasurementInDeadzone_ShouldntSetOutput)
 {

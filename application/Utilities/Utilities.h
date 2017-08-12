@@ -1,11 +1,13 @@
 #pragma once
 #include <DummySmartPointers.h>
 #include <function.h>
+#include <is_base_of.h>
 
 using util::owner;
 using util::unique_ptr;
 using util::pointer;
 using util::function;
+using util::is_base_of;
 
 #ifdef ARDUINO
 
@@ -99,5 +101,7 @@ protected:
     OnlyStaticAllocated() = default;
 
 };
+
+
 
 } // namespace util

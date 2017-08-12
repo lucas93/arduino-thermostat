@@ -5,6 +5,6 @@
 namespace heater
 {
 
-owner<IOutput> getDefaultRelayInstance();
+unique_ptr<IOutput> getDefaultRelayInstance();
 
 } //namespace heater

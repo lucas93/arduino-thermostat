@@ -1,6 +1,6 @@
 #pragma once
 
-#include<DummySmartPointers.h>
+#include<forward.h>
 
 namespace util
 {
@@ -14,6 +14,17 @@ struct abstract_function
   virtual abstract_function *clone() const =0;
   virtual ~abstract_function() = default;
 };
+
+template< typename T >
+T returnIfNotVoid()
+{
+  return T{};
+}
+
+template<>
+inline void returnIfNotVoid<void>()
+{
+}
 
 template<typename Func,typename Result,typename ...Args>
 class concrete_function: public abstract_function<Result,Args...>
@@ -78,12 +89,14 @@ public:
       f = temp;
       return *this;
   }
-  Result operator()(Args... args)
+
+  template< typename... FunArgs>
+  Result operator()(FunArgs&&... funArgs)
   {
       if(f)
-          return (*f)(args...);
+          return (*f)(forward<FunArgs>(funArgs)...);
       else
-          return Result{};
+          return returnIfNotVoid<Result>();
   }
   ~function()
   {

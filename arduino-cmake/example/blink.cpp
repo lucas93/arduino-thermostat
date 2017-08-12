@@ -1,13 +1,16 @@
-#include "Arduino.h"
-#include <SPI.h>
-#include <blinkLib.h>
+#include <Arduino.h>
+#include <Thermostat.h>
 
 
-void setup() {                
-    blink_setup(); // Setup for blinking
+void setup()
+{
     Serial.begin(9600);
 }
 
-void loop() {
-    blink(1000); // Blink for a second
+
+
+void loop()
+{
+  Thermostat thermostat{};
 }
+

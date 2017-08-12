@@ -1,4 +1,5 @@
 #pragma once
+#include <function.h>
 
 namespace util
 {
@@ -9,21 +10,80 @@ using owner = T*;
 template <typename T>
 using pointer = T*;
 
+//template <typename T>
+//class scoped_owner // deletes owner when gets out of scope
+//{
+//  T* ptr = nullptr;
+
+//public:
+//  explicit scoped_owner (T* ptr) :
+//    ptr(ptr) {}
+
+//  scoped_owner(const scoped_owner<T>& other) = delete;
+//  scoped_owner<T> operator= (const scoped_owner<T>& other) = delete;
+
+//  ~scoped_owner()
+//  {
+//    if (ptr) delete ptr;
+//  }
+
+//  T& operator*() { return *ptr; }
+//  T* operator->() { return ptr; }
+
+//  T* get() { return ptr; }
+
+//  T* release()
+//  {
+//    auto temp = get();
+//    ptr = nullptr;
+//    return temp;
+//  }
+
+//  void reset(T* newPtr)
+//  {
+//    if(ptr) delete ptr;
+
+//    ptr = newPtr;
+//  }
+//};
+
+
+
+template< typename T>
+using Deleter = void (*)(T*);
+
+template< typename T>
+void Delete(T* t) { delete t; }
+
+template< typename T>
+void dontDelete(T*) {  }
+
 template <typename T>
-class scoped_owner // deletes owner when gets out of scope
+class unique_ptr
 {
   T* ptr = nullptr;
+  using Deleter = void (*)(T*);
+  Deleter deleter;
 
 public:
-  explicit scoped_owner (T* ptr) :
-    ptr(ptr) {}
+  explicit unique_ptr (T* ptr, Deleter deleter = Delete<T>) :
+    ptr(ptr),
+    deleter(deleter){}
+  unique_ptr() : unique_ptr(nullptr, Delete<T>) {}
 
-  scoped_owner(const scoped_owner<T>& other) = delete;
-  scoped_owner<T> operator= (const scoped_owner<T>& other) = delete;
-
-  ~scoped_owner()
+  unique_ptr(const unique_ptr<T>& other) = delete;
+  unique_ptr<T> operator= (const unique_ptr<T>& other) = delete;
+  unique_ptr(unique_ptr<T>&& other) :
+    ptr(other.ptr),
+    deleter(other.deleter)
   {
-    if (ptr) delete ptr;
+    ptr = util::move(other.ptr);
+    deleter = util::move(other.deleter);
+  }
+
+  ~unique_ptr()
+  {
+    if (ptr) deleter(ptr);
   }
 
   T& operator*() { return *ptr; }
@@ -38,53 +98,19 @@ public:
     return temp;
   }
 
-  void reassign(T* newPtr)
+  void reset(T* newPtr, Deleter newDeleter = Delete<T>)
   {
-    if(ptr) delete ptr;
+    if(ptr) deleter(ptr);
 
     ptr = newPtr;
+    deleter = newDeleter;
   }
 };
 
-
-template< class T > struct remove_reference      {typedef T type;};
-template< class T > struct remove_reference<T&>  {typedef T type;};
-template< class T > struct remove_reference<T&&> {typedef T type;};
-
-template< class T >
-constexpr typename remove_reference<T>::type&& move( T&& t ) noexcept
+template<typename T, typename... Args >
+decltype(auto) make_unique(Args&&... args)
 {
-  return static_cast<typename remove_reference<T>::type&&>(t);
+  return unique_ptr<T>(new T(forward<Args>(args)...));
 }
-
-
-
-
-template< class T >
-constexpr T&& forward( typename remove_reference<T>::type&& t ) noexcept
-{
-  return static_cast<T&&>(t);
-}
-
-template< class T >
-constexpr T&& forward( typename remove_reference<T>::type& t ) noexcept
-{
-  return static_cast<T&&>(t);
-}
-
-
-
-
-template<class T, class U>
-struct is_same
-{
-  const static bool value = false;
-};
-
-template<class T>
-struct is_same<T, T>
-{
-  const static bool value = true;
-};
 
 } // namespace util

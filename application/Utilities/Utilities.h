@@ -3,7 +3,7 @@
 #include <function.h>
 
 using util::owner;
-using util::scoped_owner;
+using util::unique_ptr;
 using util::pointer;
 using util::function;
 
@@ -55,11 +55,11 @@ constexpr auto injectFunctor(T& mock, R (T::*mockedFunction)(Args...))
 
 #define INJECTABLE_INTERFACE(TYPE, NAME) \
   private: \
-  util::scoped_owner<TYPE>  NAME;\
+  util::unique_ptr<TYPE>  NAME;\
   public: \
   void inject_##TYPE(util::owner<TYPE> arg) \
   {\
-    NAME.reassign(arg);\
+    NAME.reset(arg);\
   }
 
 #define INJECTABLE_FUNCTOR(FUNCTOR_TYPE, NAME) \
@@ -71,4 +71,33 @@ constexpr auto injectFunctor(T& mock, R (T::*mockedFunction)(Args...))
     NAME = util::move(arg);\
   }
 
+namespace util
+{
 
+template<typename T>
+class OnlyStaticAllocated
+{
+    using byte = char;
+public:
+    template< int N, typename... Args>
+    static T& getInstance(Args&&... args)
+    {
+      constexpr auto instanceSize = sizeof(T);
+      static byte memory[instanceSize] = {0};
+
+      T* instance = reinterpret_cast<T*>(memory);
+      new (instance) T(util::forward<Args>(args)...);
+
+      return *instance;
+    }
+
+    OnlyStaticAllocated(const OnlyStaticAllocated& other) = delete;
+    OnlyStaticAllocated& operator=( const OnlyStaticAllocated& other) = delete;
+
+protected:
+
+    OnlyStaticAllocated() = default;
+
+};
+
+} // namespace util

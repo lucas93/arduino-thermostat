@@ -1,6 +1,6 @@
 #include <gtest/gtest.h>
 #include <gmock/gmock.h>
-#include <HeaterRelayRegulator.h>
+#include <HeaterRegulator.h>
 #include <MockIHeaterRegulatorParameters.h>
 #include <MockIOutput.h>
 #include <MockISetpoint.h>
@@ -11,14 +11,12 @@
 using namespace testing;
 using namespace std;
 
-//IOutput &output,
-//Setpoint& getSetpoint,
-//Sensor& getMeasurement
-
 namespace heater
 {
 
-struct TestHeaterRelayRegulator : public Test
+constexpr Temp defaultDeadzone = 1.0;
+
+struct TestHeaterRegulator : public Test
 {
   MockIHeaterRegulatorParameters* parameters = new MockIHeaterRegulatorParameters();
   MockISetpoint setpointMock;
@@ -26,19 +24,18 @@ struct TestHeaterRelayRegulator : public Test
   MockISensor sensorMock;
   Setpoint getSetpoint{ [&](){ return setpointMock.getSetpoint(); } };
   Sensor getMeasurement{ [&](){ return sensorMock.measurement(); } };
-  HeaterRelayRegulator sut{injectMock(parameters)};
+  HeaterRegulator sut{injectMock(parameters)};
 
-  TestHeaterRelayRegulator()
+  TestHeaterRegulator()
   {
     ON_CALL(*parameters, deadzone()).WillByDefault(Return( defaultDeadzone ))  ;
   }
 
-  const Temp defaultDeadzone = 1.0;
 };
 
 
 
-TEST_F(TestHeaterRelayRegulator,
+TEST_F(TestHeaterRegulator,
        WhenMeasurementAboveSetpoint_ShouldSetOffOutput)
 {
   EXPECT_CALL(setpointMock, getSetpoint()).WillOnce(Return(25.f));
@@ -48,7 +45,7 @@ TEST_F(TestHeaterRelayRegulator,
   sut.controllOutput(outputMock, getSetpoint, getMeasurement);
 }
 
-TEST_F(TestHeaterRelayRegulator,
+TEST_F(TestHeaterRegulator,
        WhenMeasurementBelowSetpoint_ShouldSetOnOutput)
 {
   EXPECT_CALL(setpointMock, getSetpoint()).WillOnce(Return(27.f));
@@ -58,7 +55,7 @@ TEST_F(TestHeaterRelayRegulator,
   sut.controllOutput(outputMock, getSetpoint, getMeasurement);
 }
 
-TEST_F(TestHeaterRelayRegulator,
+TEST_F(TestHeaterRegulator,
        WhenMeasurementInDeadzone_ShouldntSetOutput)
 {
   constexpr Temp deadzone = 1.0;
@@ -70,5 +67,6 @@ TEST_F(TestHeaterRelayRegulator,
 
   sut.controllOutput(outputMock, getSetpoint, getMeasurement);
 }
+
 
 } // namespace heater

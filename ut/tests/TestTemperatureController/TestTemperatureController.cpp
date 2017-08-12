@@ -53,5 +53,6 @@ TEST_F(TestTemperatureController,
       .Times(Exactly(0));
 
   sut.controlLoop();
+  TemperatureController::getDefaultInstance();
 }
 

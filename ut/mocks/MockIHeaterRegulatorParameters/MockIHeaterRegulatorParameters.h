@@ -1,4 +1,4 @@
-#include <HeaterRelayRegulator.h>
+#include <HeaterRegulatorDefaultParameters.h>
 
 namespace heater {
 

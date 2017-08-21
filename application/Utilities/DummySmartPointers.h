@@ -1,5 +1,6 @@
 #pragma once
 #include <function.h>
+#include <is_base_of.h>
 
 namespace util
 {
@@ -74,11 +75,10 @@ public:
   unique_ptr(const unique_ptr<T>& other) = delete;
   unique_ptr<T> operator= (const unique_ptr<T>& other) = delete;
   unique_ptr(unique_ptr<T>&& other) :
-    ptr(other.ptr),
-    deleter(other.deleter)
+    ptr(util::move(other.ptr)),
+    deleter(util::move(other.deleter))
   {
-    ptr = util::move(other.ptr);
-    deleter = util::move(other.deleter);
+    other.ptr = nullptr;
   }
 
   ~unique_ptr()

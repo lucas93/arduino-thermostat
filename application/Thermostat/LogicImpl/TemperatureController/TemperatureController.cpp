@@ -20,9 +20,9 @@ void TemperatureController::controlLoop()
   }
 }
 
-owner<TemperatureController> TemperatureController::getDefaultInstance()
+util::unique_ptr<TemperatureController> TemperatureController::getDefaultInstance()
 {
-  owner<TemperatureController> tempController;
+  util::unique_ptr<TemperatureController> tempController;
 
 //  auto output = getDefaultRelayInstance();
 //  auto sensor = getDefaultTemperatureSensor();

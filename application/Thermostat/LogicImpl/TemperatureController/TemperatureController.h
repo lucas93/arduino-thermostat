@@ -16,14 +16,14 @@ namespace heater
 class TemperatureController : public IController
 {
 public:
-  TemperatureController(owner<IOutput> output,
+  TemperatureController(util::unique_ptr<IOutput> output,
                         Sensor getMeasurement,
-                        owner<IRegulator> regulator,
+                        util::unique_ptr<IRegulator> regulator,
                         Setpoint getSetpoint,
                         Enabler isEnabled) :
-    output(output),
+    output(util::move(output)),
     getMeasurement(util::move(getMeasurement)),
-    regulator(regulator),
+    regulator(util::move(regulator)),
     getSetpoint(util::move(getSetpoint)),
     isEnabled(util::move(isEnabled))
   { }
@@ -33,7 +33,7 @@ public:
   virtual void setup() override;
   virtual void controlLoop() override;
 
-  static owner<TemperatureController> getDefaultInstance();
+  static util::unique_ptr<TemperatureController> getDefaultInstance();
 
 private:
   INJECTABLE_INTERFACE(IOutput, output);

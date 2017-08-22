@@ -10,8 +10,8 @@ namespace heater
 class HeaterRegulator : public IRegulator
 {
 public:
-  HeaterRegulator(owner<IHeaterRegulatorParameters> parameters)
-    : parameters(parameters)
+  HeaterRegulator(util::unique_ptr<IHeaterRegulatorParameters> parameters)
+    : parameters(util::move(parameters))
   {}
 
   virtual void controllOutput(IOutput &output,

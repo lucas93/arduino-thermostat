@@ -24,7 +24,7 @@ struct TestHeaterRegulator : public Test
   MockISensor sensorMock;
   Setpoint getSetpoint{ [&](){ return setpointMock.getSetpoint(); } };
   Sensor getMeasurement{ [&](){ return sensorMock.measurement(); } };
-  HeaterRegulator sut{injectMock(parameters)};
+  HeaterRegulator sut{util::unique_ptr<IHeaterRegulatorParameters>(parameters)};
 
   TestHeaterRegulator()
   {
@@ -54,11 +54,6 @@ TEST_F(TestHeaterRegulator,
 
   sut.controllOutput(outputMock, getSetpoint, getMeasurement);
 }
-
-struct A {};
-struct B : public A {};
-struct C {};
-
 
 TEST_F(TestHeaterRegulator,
        WhenMeasurementInDeadzone_ShouldntSetOutput)

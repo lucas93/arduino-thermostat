@@ -74,12 +74,23 @@ public:
 
   unique_ptr(const unique_ptr<T>& other) = delete;
   unique_ptr<T> operator= (const unique_ptr<T>& other) = delete;
+  unique_ptr<T>& operator= (unique_ptr<T>&& other)
+  {
+    if (ptr) deleter(ptr);
+    ptr = other.ptr;
+    deleter = other.deleter;
+    other.ptr = nullptr;
+
+    return *this;
+  }
+
   unique_ptr(unique_ptr<T>&& other) :
     ptr(util::move(other.ptr)),
     deleter(util::move(other.deleter))
   {
     other.ptr = nullptr;
   }
+
 
   ~unique_ptr()
   {

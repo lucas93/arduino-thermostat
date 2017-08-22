@@ -3,7 +3,6 @@
 #include <function.h>
 #include <is_base_of.h>
 
-using util::owner;
 using util::unique_ptr;
 using util::pointer;
 using util::function;
@@ -27,7 +26,7 @@ using std::bind;
 template <typename T>
 constexpr auto injectMock(T* ptr)
 {
-  return util::owner<T>(ptr);
+  return util::unique_ptr<T>(ptr);
 }
 
 

@@ -13,5 +13,5 @@ public:
 
 private:
   class ThermostatImpl;
-  owner<ThermostatImpl> pimpl = nullptr;
+  util::pointer<ThermostatImpl> pimpl;
 };

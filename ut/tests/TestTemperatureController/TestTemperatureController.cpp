@@ -23,11 +23,11 @@ struct TestTemperatureController : public Test
   MockISensor sensor {};
   MockISetpoint setpoint {};
 
-  TemperatureController sut{injectMock(output),
-                            bind(&MockISensor::measurement ,&sensor),
-                            injectMock(regulator),
-                            bind(&MockISetpoint::getSetpoint, &setpoint),
-                            bind(&MockIEnabler::isEnabled, &enabler)
+  TemperatureController sut{util::unique_ptr<IOutput>(output),
+                            [&](){ return sensor.measurement(); },
+                            util::unique_ptr<IRegulator>(regulator),
+                            [&](){ return setpoint.getSetpoint(); },
+                            [&](){ return enabler.isEnabled(); }
                            };
 
 };

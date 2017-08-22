@@ -8,7 +8,7 @@ class Thermostat::ThermostatImpl
 public:
   ThermostatImpl()
   {
-    tempController.reset( TemperatureController::getDefaultInstance() );
+    tempController = TemperatureController::getDefaultInstance() ;
   }
 
   void loop()
